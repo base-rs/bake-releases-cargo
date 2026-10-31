@@ -203,7 +203,7 @@ jobs:
         with:
           components: clippy, rustfmt
       - name: Install Bake launcher
-        run: cargo install socketry-cargo-bake --locked
+        run: cargo install bake --locked
       - name: Check formatting
         run: cargo fmt --all -- --check
       - name: Run Clippy
@@ -229,7 +229,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
       - name: Install Bake launcher
-        run: cargo install socketry-cargo-bake --locked
+        run: cargo install bake --locked
       - uses: rust-lang/crates-io-auth-action@v1
         id: auth
       - name: Publish remaining workspace packages

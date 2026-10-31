@@ -460,7 +460,7 @@ mod tests {
 
     fn repository() -> Repository {
         Repository {
-            owner: "socketry".to_owned(),
+            owner: "base-rs".to_owned(),
             name: "fixture".to_owned(),
         }
     }
@@ -474,8 +474,8 @@ mod tests {
     fn resolves_explicit_repository_names_and_validates_components() {
         let project = Project::new();
         let context = project.context();
-        let resolved = Repository::resolve(&context, "socketry/project").unwrap();
-        assert_eq!(resolved.full_name(), "socketry/project");
+        let resolved = Repository::resolve(&context, "base-rs/project").unwrap();
+        assert_eq!(resolved.full_name(), "base-rs/project");
         assert!(
             Repository::resolve(&context, "missing-slash")
                 .unwrap_err()
@@ -483,7 +483,7 @@ mod tests {
                 .contains("owner/name")
         );
         assert!(
-            Repository::resolve(&context, "socketry/too/many")
+            Repository::resolve(&context, "base-rs/too/many")
                 .unwrap_err()
                 .to_string()
                 .contains("only letters")
@@ -495,7 +495,7 @@ mod tests {
                 .contains("only letters")
         );
         assert!(Repository::resolve(&context, "/project").is_err());
-        assert!(Repository::resolve(&context, "socketry/").is_err());
+        assert!(Repository::resolve(&context, "base-rs/").is_err());
     }
 
     #[test]
@@ -509,10 +509,10 @@ mod tests {
         environment.prepend_path(&project.root().join("bin"));
 
         for remote in [
-            "https://github.com/socketry/project.git",
-            "http://github.com/socketry/project",
-            "ssh://git@github.com/socketry/project.git",
-            "git@github.com:socketry/project.git",
+            "https://github.com/base-rs/project.git",
+            "http://github.com/base-rs/project",
+            "ssh://git@github.com/base-rs/project.git",
+            "git@github.com:base-rs/project.git",
         ] {
             environment.set("BAKE_TEST_GIT_REMOTE", remote);
             std::fs::write(
@@ -529,13 +529,13 @@ mod tests {
                 Repository::from_origin(&project.context())
                     .unwrap()
                     .full_name(),
-                "socketry/project"
+                "base-rs/project"
             );
             assert_eq!(
                 Repository::resolve(&project.context(), "")
                     .unwrap()
                     .full_name(),
-                "socketry/project"
+                "base-rs/project"
             );
         }
     }
@@ -558,10 +558,10 @@ mod tests {
         environment.prepend_path(&project.root().join("bin"));
 
         for remote in [
-            "https://example.com/socketry/project.git",
+            "https://example.com/base-rs/project.git",
             "https://github.com",
             "https://github.com/",
-            "https://github.com/socketry/project/extra",
+            "https://github.com/base-rs/project/extra",
             "https://github.com/bad owner/project",
         ] {
             std::fs::write(&git, format!("#!/bin/sh\necho '{remote}'\n")).unwrap();
@@ -630,7 +630,7 @@ mod tests {
             Some(30),
             "crates-io",
         );
-        assert_eq!(plan["repository"], "socketry/fixture");
+        assert_eq!(plan["repository"], "base-rs/fixture");
         assert_eq!(
             plan["branch_ruleset"]["conditions"]["ref_name"]["include"][0],
             "refs/heads/main"
@@ -805,7 +805,7 @@ mod tests {
         )
         .unwrap();
 
-        assert_eq!(result["repository"], "socketry/fixture");
+        assert_eq!(result["repository"], "base-rs/fixture");
         assert!(result["branch_ruleset"]["id"].as_u64().is_some());
         assert!(result["tag_ruleset"]["id"].as_u64().is_some());
         assert!(result["environment"]["id"].as_u64().is_some());
