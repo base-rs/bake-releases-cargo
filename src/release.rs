@@ -98,7 +98,7 @@ case "$1 $2" in
     ;;
   "remote get-url")
     if [ "$BAKE_TEST_GIT_FAILURE" = remote ]; then echo remote-failed >&2; exit 3; fi
-    echo https://github.com/socketry/fixture.git
+    echo https://github.com/base-rs/fixture.git
     ;;
   "tag --list")
     if [ "$BAKE_TEST_GIT_TAG_EXISTS" = true ]; then echo "$3"; fi

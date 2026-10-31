@@ -259,7 +259,7 @@ mod tests {
 
     fn repository() -> Repository {
         Repository {
-            owner: "socketry".to_owned(),
+            owner: "base-rs".to_owned(),
             name: "fixture".to_owned(),
         }
     }
@@ -391,7 +391,7 @@ mod tests {
     fn creates_a_trusted_publisher_when_no_matching_configuration_exists() {
         let mut environment = Environment::new();
         environment.set("CARGO_REGISTRY_TOKEN", "secret");
-        let created = publisher_response("socketry", Some("crates-io"));
+        let created = publisher_response("base-rs", Some("crates-io"));
         let (api, server) = http_server(vec![
             (200, r#"{"github_configs":[]}"#.to_owned()),
             (200, created.clone()),
@@ -403,7 +403,7 @@ mod tests {
                 .unwrap();
 
         assert_eq!(response["status"], "created");
-        assert_eq!(response["github_config"]["repository_owner"], "socketry");
+        assert_eq!(response["github_config"]["repository_owner"], "base-rs");
         let requests = server.join().unwrap();
         assert!(requests[0].starts_with("GET /trusted_publishing/github_configs?crate=fixture "));
         assert!(requests[1].starts_with("POST /trusted_publishing/github_configs "));
@@ -413,7 +413,7 @@ mod tests {
     fn recognizes_an_existing_trusted_publisher_case_insensitively() {
         let mut environment = Environment::new();
         environment.set("CARGO_REGISTRY_TOKEN", "secret");
-        let configuration = r#"{"github_configs":[{"id":1,"crate":"fixture","repository_owner":"SOCKETRY","repository_name":"FIXTURE","workflow_filename":"publish.yml","environment":"crates-io"}]}"#.to_string();
+        let configuration = r#"{"github_configs":[{"id":1,"crate":"fixture","repository_owner":"BASE-RS","repository_name":"FIXTURE","workflow_filename":"publish.yml","environment":"crates-io"}]}"#.to_string();
         let (api, server) = http_server(vec![(200, configuration)]);
         environment.set("BAKE_TEST_CRATES_IO_API", &api);
 

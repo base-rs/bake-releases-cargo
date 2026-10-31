@@ -1,5 +1,10 @@
 # Releases
 
+## Unreleased
+
+- Point the package repository and documentation links at `base-rs/bake-releases-cargo` and the other `base-rs` repositories.
+- Install the `bake` launcher instead of the retired `socketry-cargo-bake` in generated publishing workflows.
+
 ## v0.2.2
 
 - Expose task APIs at the crate root while preserving legacy function and descriptor paths and registered command names.

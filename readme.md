@@ -8,24 +8,24 @@ cargo add --manifest-path bake/Cargo.toml bake-releases-cargo
 cargo bake --regenerate
 ```
 
-Follow the shared [Socketry Rust conventions](https://github.com/socketry/socketry-project-rust/blob/main/context/conventions.md).
+Follow the shared [Base Rust conventions](https://github.com/base-rs/base-project/blob/main/context/conventions.md).
 
 ## Development
 
 Install the Bake launcher and run the standard project checks:
 
 ```sh
-cargo install socketry-cargo-bake --locked
+cargo install bake --locked
 cargo bake test:coverage
 ```
 
-The test workflow runs formatting, Clippy, and complete source-region coverage on pull requests and pushes. The publishing workflow uses shared Bake tasks to validate and publish reviewed releases. It follows the canonical workflow documented by [`bake-cargo`](https://github.com/socketry/bake-cargo-rust/blob/main/readme.md#github-workflow-and-repository-settings): pull requests use `test.yml` for tests, while pushes run ordinary workspace tests in the publish check before publishing. `test.yml` also runs coverage on pushes to `main`.
+The test workflow runs formatting, Clippy, and complete source-region coverage on pull requests and pushes. The publishing workflow uses shared Bake tasks to validate and publish reviewed releases. It follows the canonical workflow documented by [`bake-cargo`](https://github.com/base-rs/bake-cargo/blob/main/readme.md#github-workflow-and-repository-settings): pull requests use `test.yml` for tests, while pushes run ordinary workspace tests in the publish check before publishing. `test.yml` also runs coverage on pushes to `main`.
 
 ## Inspect and package
 
 ```sh
 cargo bake releases:cargo:packages
-cargo bake releases:cargo:package socketry-bake
+cargo bake releases:cargo:package PACKAGE
 ```
 
 Workspace discovery uses `cargo metadata --no-deps` and ignores packages marked `publish = false` or configured for no registry. Package names and versions are read from Cargo metadata.
@@ -68,9 +68,9 @@ If `--repository owner/name` is omitted, the GitHub repository is inferred from 
 After a package has been published once, crates.io allows its owners to register a GitHub Actions trusted publisher. Preview and apply the configuration with:
 
 ```sh
-cargo bake releases:cargo:trusted-publishing:plan socketry-bake
+cargo bake releases:cargo:trusted-publishing:plan PACKAGE
 export CARGO_REGISTRY_TOKEN=...
-cargo bake releases:cargo:trusted-publishing:configure socketry-bake
+cargo bake releases:cargo:trusted-publishing:configure PACKAGE
 ```
 
 The token must have the crates.io **Trusted Publishing** endpoint scope. For `bootstrap`, it also needs permission to publish the selected crate because the task passes the same `CARGO_REGISTRY_TOKEN` to Cargo and the crates.io API. The request uses Cargo's raw token value in the `Authorization` header. It is read from the environment, never placed in command arguments or printed. The desired configuration is inferred from `origin` and includes `publish.yml` and `crates-io` by default. Re-running configuration is idempotent.
@@ -78,7 +78,7 @@ The token must have the crates.io **Trusted Publishing** endpoint scope. For `bo
 For a crate that has not yet been published, `releases:cargo:bootstrap PACKAGE` performs the initial `cargo publish --locked --package PACKAGE`, then registers the trusted publisher. This is an explicit publication task: review package contents and release state first. If the upload succeeds but publisher setup fails, the error identifies the follow-up configure task. It does not enable trusted-publishing-only mode automatically. Once the GitHub workflow succeeds, you can enable that registry requirement:
 
 ```sh
-cargo bake releases:cargo:trusted-publishing:require socketry-bake --required true
+cargo bake releases:cargo:trusted-publishing:require PACKAGE --required true
 ```
 
 Keep that setting disabled until the configured workflow has successfully published. The registry setting is reversible with `--required false`.
@@ -89,7 +89,7 @@ The release integration supports crates.io and GitHub Actions. It edits Cargo pa
 
 ## Releasing
 
-Prepare a release with `cargo bake cargo:version:patch` (or `minor`, `major`, or `bump --version X.Y.Z`), then run `cargo bake cargo:release` and open a pull request. After review and merge, GitHub Actions publishes the release when the configured `crates-io` environment approves it. Follow the shared [Releasing skill](https://github.com/socketry/socketry-project-rust/blob/main/context/releasing.md) for the standard process.
+Prepare a release with `cargo bake cargo:version:patch` (or `minor`, `major`, or `bump --version X.Y.Z`), commit with a `Release: vVERSION` trailer, then run `cargo bake cargo:release` and open a pull request. After review and merge, GitHub Actions publishes the release when the configured `crates-io` environment approves it. Follow the shared [Releasing skill](https://github.com/base-rs/base-project/blob/main/context/releasing.md) for the standard process.
 
 ## Releases
 
@@ -118,12 +118,12 @@ See [releases.md](releases.md) for the full release history.
 
 ## See Also
 
-- [`bake-cargo`](https://github.com/socketry/bake-cargo-rust).
-- [`bake-releases`](https://github.com/socketry/bake-releases-rust).
+- [`bake-cargo`](https://github.com/base-rs/bake-cargo).
+- [`bake-releases`](https://github.com/base-rs/bake-releases).
 
 ## Contributing
 
-Please open an issue or pull request on [GitHub](https://github.com/socketry/bake-releases-cargo-rust).
+Please open an issue or pull request on [GitHub](https://github.com/base-rs/bake-releases-cargo).
 
 ### Agent Context
 

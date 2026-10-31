@@ -46,7 +46,7 @@ fn runs_release_tasks_from_a_consumer_workspace() {
                 "remote",
                 "add",
                 "origin",
-                "https://github.com/socketry/fixture.git",
+                "https://github.com/base-rs/fixture.git",
             ])
             .current_dir(&root)
             .status()

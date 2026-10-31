@@ -1,7 +1,7 @@
 # Agent instructions
 
 Read the shared context index at `.agents/context/index.md` and follow the
-relevant Socketry project and Bake task guidance before changing this crate.
+relevant Base project and Bake task guidance before changing this crate.
 
 This crate exposes Bake tasks and can generate tag-based Cargo publishing
 workflows for downstream workspaces. Treat task names and generated workflow

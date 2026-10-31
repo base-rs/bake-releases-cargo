@@ -397,7 +397,7 @@ mod tests {
     fn git_origin(project: &Project, environment: &mut Environment) {
         project.executable(
             "git",
-            "#!/bin/sh\nif [ \"$1 $2\" = 'remote get-url' ]; then echo https://github.com/socketry/fixture.git; exit 0; fi\nif [ \"$1 $2\" = 'status --porcelain' ]; then exit 0; fi\nif [ \"$1 $2\" = 'tag --list' ]; then exit 0; fi\nif [ \"$1 $2\" = 'tag -a' ]; then exit 0; fi\necho unexpected-git >&2\nexit 1\n",
+            "#!/bin/sh\nif [ \"$1 $2\" = 'remote get-url' ]; then echo https://github.com/base-rs/fixture.git; exit 0; fi\nif [ \"$1 $2\" = 'status --porcelain' ]; then exit 0; fi\nif [ \"$1 $2\" = 'tag --list' ]; then exit 0; fi\nif [ \"$1 $2\" = 'tag -a' ]; then exit 0; fi\necho unexpected-git >&2\nexit 1\n",
         );
         environment.prepend_path(&project.root().join("bin"));
     }
@@ -575,7 +575,7 @@ mod tests {
         let (project, mut environment) = project();
         git_origin(&project, &mut environment);
         environment.set("CARGO_REGISTRY_TOKEN", "secret");
-        let config = r#"{"github_config":{"id":1,"crate":"fixture","repository_owner":"socketry","repository_name":"fixture","workflow_filename":"publish.yml","environment":"crates-io"}}"#;
+        let config = r#"{"github_config":{"id":1,"crate":"fixture","repository_owner":"base-rs","repository_name":"fixture","workflow_filename":"publish.yml","environment":"crates-io"}}"#;
         let (api, server) = http_server(vec![
             (200, r#"{"github_configs":[]}"#.to_owned()),
             (200, config.to_owned()),
@@ -899,7 +899,7 @@ mod tests {
         assert!(
             tasks::setup::github::plan(
                 &mut project.context(),
-                "socketry/fixture".to_owned(),
+                "base-rs/fixture".to_owned(),
                 "main".to_owned(),
                 1,
                 vec![],
@@ -919,7 +919,7 @@ mod tests {
         assert!(
             tasks::setup::github::plan(
                 &mut context,
-                "socketry/fixture".to_owned(),
+                "base-rs/fixture".to_owned(),
                 "main".to_owned(),
                 1,
                 vec![],
@@ -932,7 +932,7 @@ mod tests {
         assert!(
             tasks::setup::github::apply(
                 &mut context,
-                "socketry/fixture".to_owned(),
+                "base-rs/fixture".to_owned(),
                 "main".to_owned(),
                 1,
                 vec![],
@@ -971,7 +971,7 @@ mod tests {
         let mut context = project.context();
         let plan = tasks::setup::github::plan(
             &mut context,
-            "socketry/fixture".to_owned(),
+            "base-rs/fixture".to_owned(),
             "main".to_owned(),
             1,
             vec![],
@@ -980,7 +980,7 @@ mod tests {
             "crates-io".to_owned(),
         )
         .unwrap();
-        assert_eq!(plan["repository"], "socketry/fixture");
+        assert_eq!(plan["repository"], "base-rs/fixture");
         assert_eq!(
             plan["branch_ruleset"]["rules"][1]["parameters"]["required_status_checks"][0]["context"],
             "Publish to crates.io / check"
@@ -1001,7 +1001,7 @@ mod tests {
         assert!(
             tasks::setup::github::plan(
                 &mut context,
-                "socketry/fixture".to_owned(),
+                "base-rs/fixture".to_owned(),
                 "bad/branch".to_owned(),
                 1,
                 vec![],
@@ -1029,7 +1029,7 @@ mod tests {
         assert!(
             tasks::setup::github::apply(
                 &mut context,
-                "socketry/fixture".to_owned(),
+                "base-rs/fixture".to_owned(),
                 "bad/branch".to_owned(),
                 1,
                 vec![],
@@ -1041,7 +1041,7 @@ mod tests {
         );
         let result = tasks::setup::github::apply(
             &mut context,
-            "socketry/fixture".to_owned(),
+            "base-rs/fixture".to_owned(),
             "main".to_owned(),
             1,
             vec![],
@@ -1050,7 +1050,7 @@ mod tests {
             "crates-io".to_owned(),
         )
         .unwrap();
-        assert_eq!(result["repository"], "socketry/fixture");
+        assert_eq!(result["repository"], "base-rs/fixture");
     }
 
     #[test]
@@ -1069,7 +1069,7 @@ mod tests {
         assert_eq!(plan["github_config"]["crate"], "fixture");
 
         environment.set("CARGO_REGISTRY_TOKEN", "secret");
-        let created = r#"{"github_config":{"id":1,"crate":"fixture","repository_owner":"socketry","repository_name":"fixture","workflow_filename":"publish.yml","environment":"crates-io"}}"#;
+        let created = r#"{"github_config":{"id":1,"crate":"fixture","repository_owner":"base-rs","repository_name":"fixture","workflow_filename":"publish.yml","environment":"crates-io"}}"#;
         let (api, server) = http_server(vec![
             (200, r#"{"github_configs":[]}"#.to_owned()),
             (200, created.to_owned()),
