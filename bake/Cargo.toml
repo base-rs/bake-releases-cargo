@@ -6,6 +6,6 @@ publish = false
 
 [dependencies]
 bake = ">=0.20, <1"
-bake-cargo = "0.5.0"
+bake-cargo = "0.9.1"
 bake-releases-cargo = { path = ".." }
-base-project = ">=0.1.2"
+base-project = ">=0.1.7"
