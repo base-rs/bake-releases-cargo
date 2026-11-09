@@ -1,6 +1,6 @@
 # Releases
 
-## Unreleased
+## v0.2.3
 
 - Point the package repository and documentation links at `base-rs/bake-releases-cargo` and the other `base-rs` repositories.
 - Install the `bake` launcher instead of the retired `socketry-cargo-bake` in generated publishing workflows.
