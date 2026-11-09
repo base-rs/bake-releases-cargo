@@ -97,6 +97,12 @@ Prepare a release with `cargo bake cargo:release:patch` (or `minor`, `major`, or
 
 See [releases.md](releases.md) for the full release history.
 
+### v0.2.3
+
+- Point the package repository and documentation links at `base-rs/bake-releases-cargo` and the other `base-rs` repositories.
+- Install the `bake` launcher instead of the retired `socketry-cargo-bake` in generated publishing workflows.
+- Declare Rust 1.88 as the minimum supported version in `rust-version`, for the let-chains in this crate and in `bake-macros` 0.20 and for the `icu_*` crates that `ureq` uses through `url`.
+
 ### v0.2.2
 
 - Expose task APIs at the crate root while preserving legacy function and descriptor paths and registered command names.
@@ -105,14 +111,6 @@ See [releases.md](releases.md) for the full release history.
 
 - Adopt `socketry-project` 0.3.7 for shared project tasks and Markdown normalization.
 - Require the aggregate test and coverage result for pull request merges.
-
-### v0.2.0
-
-- Migrate public task interfaces from `socketry-bake` to `bake >=0.18.0`.
-- Generate tag-based publishing workflows that perform registry checks and package publication through Bake tasks.
-- Add `releases:cargo:publish:pending` and `releases:cargo:publish:workspace` tasks.
-- Include publishing guidance in the published package's agent context.
-- Clean up GitHub API subprocesses when writing their request body fails.
 
 <!-- bake-readme:releases:end -->
 
