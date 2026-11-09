@@ -380,7 +380,7 @@ pub mod releases {
 
 #[cfg(test)]
 mod tests {
-    use super as tasks;
+    use crate as tasks;
     use super::version as version_tasks;
     use crate::test_support::{Environment, Project, http_server};
     use bake::Registry;

@@ -4,7 +4,7 @@
 
 - Point the package repository and documentation links at `base-rs/bake-releases-cargo` and the other `base-rs` repositories.
 - Install the `bake` launcher instead of the retired `socketry-cargo-bake` in generated publishing workflows.
-- Declare Rust 1.95 as the minimum supported version in `rust-version`. The library needs 1.88, for the let-chains in this crate and in `bake` 0.20 and for the `icu_*` crates that `ureq` uses through `url`, and its unit tests need 1.95, which first accepts `use super as tasks;`.
+- Declare Rust 1.88 as the minimum supported version in `rust-version`, for the let-chains in this crate and in `bake-macros` 0.20 and for the `icu_*` crates that `ureq` uses through `url`.
 
 ## v0.2.2
 
